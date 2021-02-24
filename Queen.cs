@@ -6,12 +6,26 @@ using System.Threading.Tasks;
 
 namespace BeeWorkers
 {
-    class Queen
+    class Bee
+    {
+        public const double HoneyUnitsConsumedPerMg = .25;
+
+        public double WeightMg { get; private set; }
+        public Bee(double Weight)
+        {
+            WeightMg = Weight;
+        }
+
+        virtual public double HoneyConsumptionRate() 
+        { return WeightMg * HoneyUnitsConsumedPerMg; }
+    }
+
+    class Queen : Bee
     {
         private Worker[] workers;
         private int shiftNumber;
 
-        public Queen(Worker[] newWorkers)
+        public Queen(Worker[] newWorkers, double Weight):base(Weight)
         {
             workers = newWorkers;
             shiftNumber = 0;
@@ -33,31 +47,39 @@ namespace BeeWorkers
 
         public string WorkTheNextShift()
         {
+            double honeyCount = 0;
             shiftNumber++;
-            string resultString = "Report for shift #" + shiftNumber + "\r\n";
+            string resultString = "------------------------------------ \r\n" +
+                "Report for shift #" + shiftNumber + "\r\n";
+
             for (int i = 0; i < workers.Length; i++)
             {
                 if (workers[i].DidYouFinished())
                 {
-                    resultString += "Worker #" + (i + 1) +". I finished the job! \r\n";
+                    resultString += "Worker #" + (i + 1) +". I finished the job and eat " + workers[i].HoneyConsumptionRate() + " \r\n";
+                    honeyCount += workers[i].HoneyConsumptionRate();
                 }
                 else
                 {
                     resultString += "Worker #" + (i + 1) + ". I`m doing" +
                         workers[i].CurrentJob + " for " + 
-                        workers[i].shiftsLeft + " more shifts. \r\n";
-                }
-                
+                        workers[i].shiftsLeft + " more shifts and eat " + workers[i].HoneyConsumptionRate() + " \r\n";
+                    honeyCount += workers[i].HoneyConsumptionRate();
+                }                
             }
 
-            return resultString + "------------------------------------ \r\n";
+            return resultString + "Total honey consumed for the shift: " + honeyCount + " units /r/n" +
+                "------------------------------------ \r\n";
         }
     }
 
-    class Worker
+    class Worker : Bee
     {
-        public Worker(string[] jobsICanDo) { this.jobsICanDo = jobsICanDo; }
-        private string currentJob = ""; 
+        public Worker(string[] jobsICanDo, double Weight) : base(Weight) 
+        { this.jobsICanDo = jobsICanDo; }
+
+        private double honeyUnitsPerShiftWorked = .65;
+        private string currentJob = "";
         public string CurrentJob
         {
             get
@@ -70,11 +92,11 @@ namespace BeeWorkers
             }
         }
 
-        public int shiftsLeft { 
+        public int shiftsLeft {
             get
             {
                 return shiftsToWork - shiftsWorked;
-            } 
+            }
         }
 
         private string[] jobsICanDo;
@@ -89,7 +111,6 @@ namespace BeeWorkers
                 if (newJob == jobsICanDo[i])
                 {
                     canDoThisJob = true;
- //Console.WriteLine("#" + i + " I Can`t(((((((((");
                     break;
                 }
             }
@@ -99,16 +120,9 @@ namespace BeeWorkers
                 currentJob = newJob;
                 this.shiftsToWork = shiftsToWork;
                 shiftsWorked = 0;
-Console.WriteLine("I CAN!");
                 return true;
             }
-            else
-            {
-Console.WriteLine(currentJob);
-                return false;
-
-            }
-
+            else return false;
         }
 
         public bool DidYouFinished()
@@ -120,6 +134,15 @@ Console.WriteLine(currentJob);
                 return false;
             else
                 return true;
+        }
+
+        public override double HoneyConsumptionRate()
+        {   
+            if(shiftsLeft > 0)
+                return base.HoneyConsumptionRate() + honeyUnitsPerShiftWorked;
+            else
+                return base.HoneyConsumptionRate();
+
         }
     }
 }
