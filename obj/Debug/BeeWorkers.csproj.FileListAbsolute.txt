@@ -1,0 +1,10 @@
+C:\Users\admin\source\repos\BeeWorkers\bin\Debug\BeeWorkers.exe.config
+C:\Users\admin\source\repos\BeeWorkers\bin\Debug\BeeWorkers.exe
+C:\Users\admin\source\repos\BeeWorkers\bin\Debug\BeeWorkers.pdb
+C:\Users\admin\source\repos\BeeWorkers\obj\Debug\BeeWorkers.csprojAssemblyReference.cache
+C:\Users\admin\source\repos\BeeWorkers\obj\Debug\BeeWorkers.Form1.resources
+C:\Users\admin\source\repos\BeeWorkers\obj\Debug\BeeWorkers.Properties.Resources.resources
+C:\Users\admin\source\repos\BeeWorkers\obj\Debug\BeeWorkers.csproj.GenerateResource.cache
+C:\Users\admin\source\repos\BeeWorkers\obj\Debug\BeeWorkers.csproj.CoreCompileInputs.cache
+C:\Users\admin\source\repos\BeeWorkers\obj\Debug\BeeWorkers.exe
+C:\Users\admin\source\repos\BeeWorkers\obj\Debug\BeeWorkers.pdb
